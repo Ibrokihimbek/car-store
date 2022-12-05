@@ -1,5 +1,5 @@
-import 'package:car_company/data/models/company_data/company_data.dart';
-import 'package:car_company/data/models/company_data/company_models.dart';
+import 'package:car_company/data/api_service/app_api.dart';
+import 'package:car_company/data/app_repositoriy/app_repository.dart';
 import 'package:car_company/screens/app_router.dart';
 import 'package:car_company/screens/company_info/company_info_page.dart';
 import 'package:car_company/screens/home_page/widgets/company_item_widget.dart';
@@ -15,6 +15,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppRepository appRepository = AppRepository(apiService: ApiService());
+    CompanyViewModel viewModelModel = CompanyViewModel(appRepository: appRepository);
+
+
     return Scaffold(
       backgroundColor: AppColors.C_E5E5E5,
       appBar: PreferredSize(
@@ -34,51 +38,42 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
-      body: Consumer<CompanyViewModel>(
-        builder: (context, companyViewModel, child) {
-          return Center(
-            child: companyViewModel.isLoading
-                ? const CircularProgressIndicator()
-                : Expanded(
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: companyViewModel.companyData!.data.length,
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 2.5 / 3.5,
-                        mainAxisSpacing: 12,
-                        crossAxisSpacing: 12,
-                      ),
-                      itemBuilder: (BuildContext context, int index) {
-                        return CompanyItamWidget(
-                          company: companyViewModel.companyData!.data[index],
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => CompanyInfoPage(
-                                  car: companyViewModel
-                                      .companyData!.data[index].id,
-                                ),
-                              ),
-                            );
-
-                            // Navigator.pushNamed(
-                            //   context,
-                            //   RoutName.companyInfo,
-                            //   arguments: {
-                            //     'productInfo': companyViewModel
-                            //         .companyData!.data[index].id,
-                            //   },
-                            // );
-                          },
-                        );
-                      },
+      body: ChangeNotifierProvider(
+        create: (context)=>viewModelModel,
+        builder: (context,child){
+        return  Consumer<CompanyViewModel>(
+            builder: (context, companyViewModel, child) {
+              return Center(
+                child: companyViewModel.isLoading
+                    ? const CircularProgressIndicator()
+                    : Expanded(
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    itemCount: companyViewModel.companiesData.length,
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 2.5 / 3.5,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
                     ),
+                    itemBuilder: (BuildContext context, int index) {
+                      var item = companyViewModel.companiesData[index];
+                      return CompanyItamWidget(
+                        company: companyViewModel.companiesData[index],
+                        onTap: () {
+                          companyViewModel.fatchCompanyInfofromId(
+                              id: item.id);
+                          Navigator.pushNamed(context, RoutName.companyInfo,arguments: viewModelModel);
+                        },
+                      );
+                    },
                   ),
+                ),
+              );
+            },
           );
         },
       ),

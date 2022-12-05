@@ -7,16 +7,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  AppRepository appRepository = AppRepository(apiService: ApiService());
-  CompanyViewModel companyViewModel =
-      CompanyViewModel(appRepository: appRepository);
+  //AppRepository appRepository = AppRepository(apiService: ApiService());
+  // CompanyViewModel companyViewModel =
+  //     CompanyViewModel(appRepository: appRepository);
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => companyViewModel),
-      ],
-      child: const MyApp(),
-    ),
+    // MultiProvider(
+    //   providers: [
+    //     ChangeNotifierProvider(create: (_) => companyViewModel),
+    //   ],
+    //   child: const MyApp(),
+    // ),
+      MyApp()
   );
 }
 

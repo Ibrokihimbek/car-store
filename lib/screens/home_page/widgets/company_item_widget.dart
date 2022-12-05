@@ -7,7 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CompanyItamWidget extends StatelessWidget {
-  CompanyModels company;
+  CompanyModel company;
   VoidCallback onTap;
   CompanyItamWidget({super.key, required this.company, required this.onTap});
 

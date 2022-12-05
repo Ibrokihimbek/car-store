@@ -1,11 +1,11 @@
-class CompanyModels {
+class CompanyModel {
   int id;
   String carModel;
   num averagePrice;
   String logo;
   int establishedYear;
 
-  CompanyModels({
+  CompanyModel({
     required this.id,
     required this.carModel,
     required this.averagePrice,
@@ -13,8 +13,8 @@ class CompanyModels {
     required this.establishedYear,
   });
 
-  factory CompanyModels.fromJson(Map<String, dynamic> jsonData) {
-    return CompanyModels(
+  factory CompanyModel.fromJson(Map<String, Object?> jsonData) {
+    return CompanyModel(
       id: jsonData['id'] as int? ?? 0,
       carModel: jsonData['car_model'] as String? ?? '',
       averagePrice: jsonData['average_price'] as num? ?? 0,
